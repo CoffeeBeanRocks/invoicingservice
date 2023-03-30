@@ -9,11 +9,12 @@ public class Invoice {
     private String orderPlaced;
     private double total;
     @Valid
-    private List<Item> invoiceItem;
+    private InvoiceItem invoiceItem;
     @Valid
     private Payment payment;
 
-    public Invoice(int customerId, String orderPlaced, double total, List<Item> invoiceItem, Payment payment) {
+    public Invoice(int customerId, String orderPlaced, double total, InvoiceItem invoiceItem, Payment payment) {
+        this.customerId = customerId;
         this.orderPlaced = orderPlaced;
         this.total = total;
         this.invoiceItem = invoiceItem;
@@ -44,11 +45,11 @@ public class Invoice {
         this.total = total;
     }
 
-    public List<Item> getInvoiceItem() {
+    public InvoiceItem getInvoiceItem() {
         return invoiceItem;
     }
 
-    public void setInvoiceItem(List<Item> invoiceItem) {
+    public void setInvoiceItem(InvoiceItem invoiceItem) {
         this.invoiceItem = invoiceItem;
     }
 

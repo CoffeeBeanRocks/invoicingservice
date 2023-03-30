@@ -1,16 +1,23 @@
 package com.example.invoicingservice.repository;
 
-import com.example.invoicingservice.model.Invoice;
-import com.example.invoicingservice.model.Item;
-import com.example.invoicingservice.model.ShippingStatus;
+import com.example.invoicingservice.model.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
 public class InvoiceRepository {
     List<Invoice> invoices = new ArrayList<>();
+
+    public InvoiceRepository() {
+        Address iuAddress = new Address("Indiana", "Bloomington", 47408);
+        List<Item> myItems = Arrays.asList(new Item("Tea", 24.84, 1), new Item("Turmeric Paste", 22.99, 2));
+        InvoiceItem invoiceItem = new InvoiceItem("shipping now", myItems, "3/5/2023", iuAddress);
+        Invoice invoice = new Invoice(1, "3/4/2023", 60.26, invoiceItem, new Payment("Discover", "12345678", iuAddress));
+        invoices.add(invoice);
+    }
 
     public List<Invoice> findAll() {
         return invoices;
@@ -26,11 +33,7 @@ public class InvoiceRepository {
     public void update(ShippingStatus status, int id) {
         Invoice x = getInvoiceById(id);
         if(x != null) {
-            for(Item item : x.getInvoiceItem())
-            {
-                //TODO: Update Repository
-                //TODO: ERROR, no such thing as itemId
-            }
+            x.getInvoiceItem().setStatus(status.getStatus());
         }
         else {
             throw new IllegalStateException("invoice id is not valid");
