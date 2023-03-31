@@ -19,19 +19,8 @@ public class InvoiceRepository {
         invoices.add(invoice);
     }
 
-    public List<Invoice> findAll() {
-        return invoices;
-    }
-
-    public int create(Invoice invoice) {
-        int id = invoices.size() + 1;
-        invoice.setCustomerId(id);
-        invoices.add(invoice);
-        return id;
-    }
-
-    public void update(ShippingStatus status, int id) {
-        Invoice x = getInvoiceById(id);
+    public void update(ShippingStatus status, int invoiceId) {
+        Invoice x = getInvoiceById(invoiceId);
         if(x != null) {
             x.getInvoiceItem().setStatus(status.getStatus());
         }
@@ -40,7 +29,21 @@ public class InvoiceRepository {
         }
     }
 
-    public Invoice getInvoiceById(int id) {
-        return invoices.stream().filter(x -> x.getCustomerId() == id).findAny().orElse(null);
+    public Invoice getInvoiceById(int invoiceId) {
+        return invoices.stream().filter(x -> x.getCustomerId() == invoiceId).findAny().orElse(null);
+    }
+
+    public Invoice getInvoiceById(int invoiceId, int itemId) {
+        Invoice invoice = invoices.stream().filter(x -> x.getCustomerId() == invoiceId).findAny().orElse(null);
+        if(invoice != null)
+        {
+            for(Item i : invoice.getInvoiceItem().getItems())
+            {
+                if(i.getId() == itemId)
+                    return invoice;
+            }
+            throw new IllegalStateException("item id is not valid");
+        }
+        throw new IllegalStateException("invoice id is not valid");
     }
 }
