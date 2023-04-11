@@ -1,40 +1,5 @@
 package com.example.invoicingservice.model;
 
-import jakarta.validation.Valid;
+public record Payment(int id, String method, String number, Address billingAddress) {
 
-public class Payment {
-    private String method;
-    private String number;
-    @Valid
-    private Address billingAddress;
-
-    public Payment(String method, String number, Address billingAddress) {
-        this.method = method;
-        this.number = number;
-        this.billingAddress = billingAddress;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public Address getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(Address billingAddress) {
-        this.billingAddress = billingAddress;
-    }
 }

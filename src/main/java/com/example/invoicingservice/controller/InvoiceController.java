@@ -1,40 +1,28 @@
 package com.example.invoicingservice.controller;
 
-import com.example.invoicingservice.model.Invoice;
-import com.example.invoicingservice.model.ShippingStatus;
-import com.example.invoicingservice.repository.InvoiceRepository;
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import com.example.invoicingservice.model.Order;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
 
-    private InvoiceRepository repository;
+    private final WebClient orderService;
 
-    public InvoiceController(InvoiceRepository repository) {
-        this.repository = repository;
+    public InvoiceController(WebClient.Builder webClientBuilder) {
+        orderService = webClientBuilder.baseUrl("http://localhost:8083").build();
     }
 
-    @PostMapping
-    public int create(@Valid @RequestBody Invoice invoice){
-        return repository.create(invoice);
-    }
-
-    @GetMapping({"/{id}"})
-    public Invoice getInvoiceById(@Valid @PathVariable int id) {
-        Invoice invoice = repository.getInvoiceById(id);
-        if(invoice == null)
-            throw new IllegalStateException("order with this id does not exist in the system");
-        else
-            return invoice;
-    }
-
-    @PutMapping({"/{id}"})
-    public void updateInvoiceStatus(@Valid @RequestBody ShippingStatus shippingStatus, @Valid @PathVariable int id) {
-        repository.update(shippingStatus, id);
+    @GetMapping("/{orderId}")
+    public Mono<Order> findByOrderId(@PathVariable int orderId){
+        return orderService.get().uri("/orders/order/{orderId}", orderId)
+                .retrieve()
+                .bodyToMono(Order.class);
 
     }
 }
