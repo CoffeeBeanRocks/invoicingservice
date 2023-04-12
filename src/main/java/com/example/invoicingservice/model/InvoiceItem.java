@@ -6,6 +6,7 @@ import java.util.List;
 public class InvoiceItem {
 
     private String status;
+
     private Date on;
 
     private Address address;

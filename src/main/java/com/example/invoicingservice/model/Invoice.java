@@ -8,7 +8,7 @@ public class Invoice {
 
     private float total;
 
-    private List<InvoiceItem> invoiceItems;
+    private InvoiceItem invoiceItems;
 
     private Payment payment;
 
@@ -28,11 +28,11 @@ public class Invoice {
         this.total = total;
     }
 
-    public List<InvoiceItem> getInvoiceItems() {
+    public InvoiceItem getInvoiceItems() {
         return invoiceItems;
     }
 
-    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
+    public void setInvoiceItems(InvoiceItem invoiceItems) {
         this.invoiceItems = invoiceItems;
     }
 
