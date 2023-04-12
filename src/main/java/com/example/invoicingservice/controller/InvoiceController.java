@@ -15,7 +15,7 @@ public class InvoiceController {
     private final WebClient orderService;
 
     public InvoiceController(WebClient.Builder webClientBuilder) {
-        orderService = webClientBuilder.baseUrl("http://localhost:8083").build();
+        orderService = webClientBuilder.baseUrl("http://localhost:8080").build();
     }
 
     @GetMapping("/{orderId}")
@@ -23,6 +23,5 @@ public class InvoiceController {
         return orderService.get().uri("/orders/order/{orderId}", orderId)
                 .retrieve()
                 .bodyToMono(Order.class);
-
     }
 }
